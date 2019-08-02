@@ -314,15 +314,15 @@ def MobileNetV2(input_shape=None,
     x = layers.Conv2D(first_block_filters,
                       kernel_size=3,
                       strides=(2, 2),
-    #                  padding='valid',
+                      padding='valid',
                       use_bias=False,
-                      name='conv1')(x)
+                      name='Conv1')(x)
     x = layers.BatchNormalization(axis=channel_axis,
                                   epsilon=1e-3,
                                   momentum=0.999,
                                   name='bn_Conv1')(x)
-    x = layers.ReLU(6., name='conv1_relu')(x)
-    """
+    x = layers.ReLU(6., name='Conv1_relu')(x)
+
     x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1,
                             expansion=1, block_id=0)
 
@@ -363,7 +363,7 @@ def MobileNetV2(input_shape=None,
 
     x = _inverted_res_block(x, filters=320, alpha=alpha, stride=1,
                             expansion=6, block_id=16)
-    """
+
     # no alpha applied to last conv as stated in the paper:
     # if the width multiplier is greater than 1 we
     # increase the number of output channels
@@ -380,7 +380,7 @@ def MobileNetV2(input_shape=None,
                                   epsilon=1e-3,
                                   momentum=0.999,
                                   name='Conv_1_bn')(x)
-    x = layers.ReLU(6., name='out_relu1')(x)
+    x = layers.ReLU(6., name='out_relu')(x)
 
     if include_top:
         x = layers.GlobalAveragePooling2D()(x)
@@ -432,14 +432,12 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
     pointwise_filters = _make_divisible(pointwise_conv_filters, 8)
     x = inputs
     prefix = 'block_{}_'.format(block_id)
-    if stride == 2:
-        x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-                                 name=prefix + 'pad')(x)
+
     if block_id:
         # Expand
         x = layers.Conv2D(expansion * in_channels,
                           kernel_size=1,
-        #                  padding='same',
+                          padding='same',
                           use_bias=False,
                           activation=None,
                           name=prefix + 'expand')(x)
@@ -453,16 +451,24 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
 
     # Depthwise
     if stride == 2:
-        x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-                                 name=prefix + 'pad')(x)
         #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-        #                         name='conv1_pad')(x)
-    x = layers.DepthwiseConv2D(kernel_size=3,
+        #                         name=prefix + 'pad')(x)
+        x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
+                                 name='conv1_pad')(x)
+        x = layers.DepthwiseConv2D(kernel_size=3,
                                strides=stride,
                                activation=None,
                                use_bias=False,
-    #                           padding='same' if stride == 1 else 'valid',
+                               padding='valid',
                                name=prefix + 'depthwise')(x)
+    else:
+        x = layers.DepthwiseConv2D(kernel_size=3,
+                               strides=stride,
+                               activation=None,
+                               use_bias=False,
+                               padding='same',
+                               name=prefix + 'depthwise')(x)
+
     x = layers.BatchNormalization(axis=channel_axis,
                                   epsilon=1e-3,
                                   momentum=0.999,
@@ -473,7 +479,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
     # Project
     x = layers.Conv2D(pointwise_filters,
                       kernel_size=1,
-    #                  padding='same',
+                      padding='same',
                       use_bias=False,
                       activation=None,
                       name=prefix + 'project')(x)
