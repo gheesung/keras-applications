@@ -322,7 +322,7 @@ def MobileNetV2(input_shape=None,
                                   momentum=0.999,
                                   name='bn_Conv1')(x)
     x = layers.ReLU(6., name='conv1_relu')(x)
-
+'''
     x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1,
                             expansion=1, block_id=0)
 
@@ -363,7 +363,7 @@ def MobileNetV2(input_shape=None,
 
     x = _inverted_res_block(x, filters=320, alpha=alpha, stride=1,
                             expansion=6, block_id=16)
-
+'''
     # no alpha applied to last conv as stated in the paper:
     # if the width multiplier is greater than 1 we
     # increase the number of output channels
