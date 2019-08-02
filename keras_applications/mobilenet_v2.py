@@ -316,12 +316,12 @@ def MobileNetV2(input_shape=None,
                       strides=(2, 2),
                       padding='valid',
                       use_bias=False,
-                      name='Conv1')(x)
+                      name='conv1')(x)
     x = layers.BatchNormalization(axis=channel_axis,
                                   epsilon=1e-3,
                                   momentum=0.999,
                                   name='bn_Conv1')(x)
-    x = layers.ReLU(6., name='Conv1_relu')(x)
+    x = layers.ReLU(6., name='conv1_relu')(x)
 
     x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1,
                             expansion=1, block_id=0)
@@ -451,10 +451,10 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
 
     # Depthwise
     if stride == 2:
-        #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-        #                         name=prefix + 'pad')(x)
         x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-                                 name='conv1_pad')(x)
+                                 name=prefix + 'pad')(x)
+        #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
+        #                         name='conv1_pad')(x)
     x = layers.DepthwiseConv2D(kernel_size=3,
                                strides=stride,
                                activation=None,
