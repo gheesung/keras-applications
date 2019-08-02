@@ -454,7 +454,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
         #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
         #                         name=prefix + 'pad')(x)
         x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-                                 name='conv1_pad')(x)
+                                 name=prefix + 'conv1_pad')(x)
         x = layers.DepthwiseConv2D(kernel_size=3,
                                strides=stride,
                                activation=None,
@@ -462,13 +462,13 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
                                padding='valid',
                                name=prefix + 'depthwise')(x)
     else:
-        x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-                                 name='conv1_pad')(x)
+        #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
+        #                         name=prefix + 'conv1_pad')(x)
         x = layers.DepthwiseConv2D(kernel_size=3,
                                strides=stride,
                                activation=None,
                                use_bias=False,
-                               padding='valid',
+                               padding='same',
                                name=prefix + 'depthwise')(x)
 
     x = layers.BatchNormalization(axis=channel_axis,
