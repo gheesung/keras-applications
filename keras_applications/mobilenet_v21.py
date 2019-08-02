@@ -124,7 +124,7 @@ def _make_divisible(v, divisor, min_value=None):
     return new_v
 
 
-def MobileNetV2(input_shape=None,
+def MobileNetV21(input_shape=None,
                 alpha=1.0,
                 include_top=True,
                 weights='imagenet',
