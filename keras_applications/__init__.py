@@ -57,7 +57,7 @@ from . import inception_v3
 from . import inception_resnet_v2
 from . import xception
 from . import mobilenet
-from . import mobilenet_v2
+from . import mobilenet_v21
 from . import densenet
 from . import nasnet
 from . import resnet
