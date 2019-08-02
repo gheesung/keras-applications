@@ -310,7 +310,7 @@ def MobileNetV2(input_shape=None,
     #x = layers.ZeroPadding2D(padding=correct_pad(backend, img_input, 3),
     #                         name='Conv1_pad')(img_input)
     x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-                             name='Conv1_pad')(img_input)
+                             name='conv1_pad')(img_input)
     x = layers.Conv2D(first_block_filters,
                       kernel_size=3,
                       strides=(2, 2),
@@ -451,8 +451,10 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
 
     # Depthwise
     if stride == 2:
+        #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
+        #                         name=prefix + 'pad')(x)
         x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-                                 name=prefix + 'pad')(x)
+                                 name='conv1_pad')(x)
     x = layers.DepthwiseConv2D(kernel_size=3,
                                strides=stride,
                                activation=None,
