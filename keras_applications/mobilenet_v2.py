@@ -380,7 +380,7 @@ def MobileNetV2(input_shape=None,
                                   epsilon=1e-3,
                                   momentum=0.999,
                                   name='Conv_1_bn')(x)
-    x = layers.ReLU(6., name='out_relu')(x)
+    x = layers.ReLU(6., name='out_relu1')(x)
 
     if include_top:
         x = layers.GlobalAveragePooling2D()(x)
