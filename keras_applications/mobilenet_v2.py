@@ -432,7 +432,9 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
     pointwise_filters = _make_divisible(pointwise_conv_filters, 8)
     x = inputs
     prefix = 'block_{}_'.format(block_id)
-
+    if stride == 2:
+        x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
+                                 name=prefix + 'pad')(x)
     if block_id:
         # Expand
         x = layers.Conv2D(expansion * in_channels,
