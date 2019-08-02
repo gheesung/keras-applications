@@ -124,7 +124,7 @@ def _make_divisible(v, divisor, min_value=None):
     return new_v
 
 
-def MobileNetV21(input_shape=None,
+def MobileNetV2(input_shape=None,
                 alpha=1.0,
                 include_top=True,
                 weights='imagenet',
@@ -307,8 +307,6 @@ def MobileNetV21(input_shape=None,
     channel_axis = 1 if backend.image_data_format() == 'channels_first' else -1
 
     first_block_filters = _make_divisible(32 * alpha, 8)
-    #x = layers.ZeroPadding2D(padding=correct_pad(backend, img_input, 3),
-    #                         name='Conv1_pad')(img_input)
     x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
                              name='conv1_pad')(img_input)
     x = layers.Conv2D(first_block_filters,
@@ -451,26 +449,14 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
 
     # Depthwise
     if stride == 2:
-        #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-        #                         name=prefix + 'pad')(x)
         x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
                                  name=prefix + 'conv1_pad')(x)
-        x = layers.DepthwiseConv2D(kernel_size=3,
+    x = layers.DepthwiseConv2D(kernel_size=3,
                                strides=stride,
                                activation=None,
                                use_bias=False,
-                               padding='valid',
+                               padding='same' if stride == 1 else 'valid',
                                name=prefix + 'depthwise')(x)
-    else:
-        #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-        #                         name=prefix + 'conv1_pad')(x)
-        x = layers.DepthwiseConv2D(kernel_size=3,
-                               strides=stride,
-                               activation=None,
-                               use_bias=False,
-                               padding='same',
-                               name=prefix + 'depthwise')(x)
-
     x = layers.BatchNormalization(axis=channel_axis,
                                   epsilon=1e-3,
                                   momentum=0.999,
