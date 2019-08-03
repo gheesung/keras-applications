@@ -461,7 +461,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
                                strides=stride,
                                activation=None,
                                use_bias=False,
-                               padding='valid',
+                               padding='same' if stride == 1 else 'valid',
                                name=prefix + 'depthwise')(x)
     x = layers.BatchNormalization(axis=channel_axis,
                                   epsilon=1e-3,
