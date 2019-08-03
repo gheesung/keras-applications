@@ -321,46 +321,46 @@ def MobileNetV2(input_shape=None,
                                   name='bn_Conv1')(x)
     x = layers.ReLU(6., name='Conv1_relu')(x)
 
-    x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1,
-                            expansion=1, block_id=0)
+    #x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1,
+    #                        expansion=1, block_id=0)
 
-    x = _inverted_res_block(x, filters=24, alpha=alpha, stride=2,
-                            expansion=6, block_id=1)
-    x = _inverted_res_block(x, filters=24, alpha=alpha, stride=1,
-                            expansion=6, block_id=2)
+    #x = _inverted_res_block(x, filters=24, alpha=alpha, stride=2,
+    #                        expansion=6, block_id=1)
+    #x = _inverted_res_block(x, filters=24, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=2)
 
-    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=2,
-                            expansion=6, block_id=3)
-    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1,
-                            expansion=6, block_id=4)
-    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1,
-                            expansion=6, block_id=5)
+    #x = _inverted_res_block(x, filters=32, alpha=alpha, stride=2,
+    #                        expansion=6, block_id=3)
+    #x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=4)
+    #x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=5)
 
-    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=2,
-                            expansion=6, block_id=6)
-    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1,
-                            expansion=6, block_id=7)
-    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1,
-                            expansion=6, block_id=8)
-    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1,
-                            expansion=6, block_id=9)
+    #x = _inverted_res_block(x, filters=64, alpha=alpha, stride=2,
+    #                        expansion=6, block_id=6)
+    #x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=7)
+    #x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=8)
+    #x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=9)
 
-    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1,
-                            expansion=6, block_id=10)
-    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1,
-                            expansion=6, block_id=11)
-    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1,
-                            expansion=6, block_id=12)
+    #x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=10)
+    #x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=11)
+    #x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=12)
 
-    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=2,
-                            expansion=6, block_id=13)
-    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1,
-                            expansion=6, block_id=14)
-    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1,
-                            expansion=6, block_id=15)
+    #x = _inverted_res_block(x, filters=160, alpha=alpha, stride=2,
+    #                        expansion=6, block_id=13)
+    #x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=14)
+    #x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=15)
 
-    x = _inverted_res_block(x, filters=320, alpha=alpha, stride=1,
-                            expansion=6, block_id=16)
+    #x = _inverted_res_block(x, filters=320, alpha=alpha, stride=1,
+    #                        expansion=6, block_id=16)
 
     # no alpha applied to last conv as stated in the paper:
     # if the width multiplier is greater than 1 we
@@ -461,7 +461,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
                                strides=stride,
                                activation=None,
                                use_bias=False,
-                               padding='same' if stride == 1 else 'valid',
+                               padding='valid',
                                name=prefix + 'depthwise')(x)
     x = layers.BatchNormalization(axis=channel_axis,
                                   epsilon=1e-3,
