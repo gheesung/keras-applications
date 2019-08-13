@@ -447,6 +447,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
     else:
         prefix = 'expanded_conv_'
 
+    # modified for k210 which requires different kind of padding.
     # Depthwise
     if stride == 2:
         x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
@@ -457,14 +458,6 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
                                use_bias=False,
                                padding='same' if stride == 1 else 'valid',
                                name=prefix + 'depthwise')(x)
-    #x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)),
-    #                             name=prefix + 'conv1_pad')(x)
-    #x = layers.DepthwiseConv2D((3, 3),
-    #                           strides=stride,
-    #                           activation=None,
-    #                           use_bias=False,
-    #                           padding='valid',
-    #                           name=prefix + 'depthwise')(x)
     x = layers.BatchNormalization(axis=channel_axis,
                                   epsilon=1e-3,
                                   momentum=0.999,
